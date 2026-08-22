@@ -1,0 +1,39 @@
+name: Windows 빌드
+
+# Mac에서는 Windows용 .exe를 만들 수 없어서, 이 저장소를 GitHub에 올리고
+# Actions 탭에서 수동 실행(workflow_dispatch)하면 windows-latest 러너에서
+# 빌드 후 산출물(Artifacts)로 내려받을 수 있게 하는 워크플로입니다.
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 의존성 설치
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 성경 데이터 / 배경 / 아이콘 준비
+        run: |
+          if (!(Test-Path app/data/bible.json)) { python scripts/build_bible_data.py }
+          if (!(Test-Path app/data/backgrounds_default.json)) { python scripts/generate_default_backgrounds.py }
+          if (!(Test-Path icons/icon.ico)) { python scripts/generate_icon.py }
+
+      - name: PyInstaller 빌드
+        run: pyinstaller build.spec --noconfirm
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 성경말씀PPT생성기-windows
+          path: dist/성경말씀PPT생성기/

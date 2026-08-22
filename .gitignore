@@ -1,0 +1,10 @@
+venv/
+build/
+dist/
+# 저작권이 있는 성경 원문. 앱 실행에는 파싱된 app/data/bible.json만 있으면 되고
+# 이 원본 텍스트는 필요 없음(재생성하려면 scripts/build_bible_data.py 참고).
+data_source/
+*.spec.bak
+__pycache__/
+*.pyc
+.DS_Store

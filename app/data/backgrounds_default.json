@@ -1,0 +1,232 @@
+[
+  {
+    "id": "navy-fade",
+    "name": "차분한 네이비",
+    "file": "navy-fade.jpg"
+  },
+  {
+    "id": "deep-charcoal",
+    "name": "딥 차콜",
+    "file": "deep-charcoal.jpg"
+  },
+  {
+    "id": "warm-sunset",
+    "name": "따뜻한 노을",
+    "file": "warm-sunset.jpg"
+  },
+  {
+    "id": "royal-purple",
+    "name": "로열 퍼플",
+    "file": "royal-purple.jpg"
+  },
+  {
+    "id": "forest-green",
+    "name": "차분한 포레스트",
+    "file": "forest-green.jpg"
+  },
+  {
+    "id": "soft-sky",
+    "name": "은은한 하늘",
+    "file": "soft-sky.jpg"
+  },
+  {
+    "id": "parchment",
+    "name": "따뜻한 파피루스",
+    "file": "parchment.jpg"
+  },
+  {
+    "id": "wine",
+    "name": "와인 레드",
+    "file": "wine.jpg"
+  },
+  {
+    "id": "teal-glow",
+    "name": "틸 글로우",
+    "file": "teal-glow.jpg"
+  },
+  {
+    "id": "gold-black",
+    "name": "골드 블랙",
+    "file": "gold-black.jpg"
+  },
+  {
+    "id": "church-interior-01",
+    "name": "교회 내부 1",
+    "file": "church-interior-01.jpg",
+    "source": "https://www.pexels.com/photo/modest-christian-church-interior-16000635/"
+  },
+  {
+    "id": "church-interior-02",
+    "name": "교회 내부 2",
+    "file": "church-interior-02.jpg",
+    "source": "https://www.pexels.com/photo/interior-of-church-9221328/"
+  },
+  {
+    "id": "wooden-cross-sky",
+    "name": "나무 십자가",
+    "file": "wooden-cross-sky.jpg",
+    "source": "https://www.pexels.com/photo/brown-wooden-cross-208371/"
+  },
+  {
+    "id": "bible-with-cross",
+    "name": "성경과 십자가",
+    "file": "bible-with-cross.jpg",
+    "source": "https://www.pexels.com/photo/a-bible-with-wooden-cross-4330070/"
+  },
+  {
+    "id": "open-bible-dark",
+    "name": "펼쳐진 성경 (어두운 톤)",
+    "file": "open-bible-dark.jpg",
+    "source": "https://www.pexels.com/photo/open-bible-2294878/"
+  },
+  {
+    "id": "open-bible-warm",
+    "name": "펼쳐진 성경 (따뜻한 톤)",
+    "file": "open-bible-warm.jpg",
+    "source": "https://www.pexels.com/photo/close-up-of-open-bible-on-table-11696719/"
+  },
+  {
+    "id": "stained-glass-01",
+    "name": "스테인드글라스 1",
+    "file": "stained-glass-01.jpg",
+    "source": "https://www.pexels.com/photo/a-stained-glass-church-window-with-a-beautiful-design-8674185/"
+  },
+  {
+    "id": "stained-glass-02",
+    "name": "스테인드글라스 2",
+    "file": "stained-glass-02.jpg",
+    "source": "https://www.pexels.com/photo/low-angle-view-of-stained-glass-window-248091/"
+  },
+  {
+    "id": "candle-dark",
+    "name": "촛불",
+    "file": "candle-dark.jpg",
+    "source": "https://www.pexels.com/photo/lighted-candle-in-dark-room-5843608/"
+  },
+  {
+    "id": "praying-hands-bible",
+    "name": "기도하는 손",
+    "file": "praying-hands-bible.jpg",
+    "source": "https://www.pexels.com/photo/belief-bible-book-business-267559/"
+  },
+  {
+    "id": "worship-silhouette-01",
+    "name": "찬양 실루엣 1",
+    "file": "worship-silhouette-01.jpg",
+    "source": "https://www.pexels.com/photo/silhouette-of-a-man-worshiping-13899663/"
+  },
+  {
+    "id": "worship-silhouette-02",
+    "name": "찬양 실루엣 2",
+    "file": "worship-silhouette-02.jpg",
+    "source": "https://www.pexels.com/photo/silhouette-photo-of-person-raising-hands-1005198/"
+  },
+  {
+    "id": "godrays-clouds",
+    "name": "빛줄기(구름)",
+    "file": "godrays-clouds.jpg",
+    "source": "https://www.pexels.com/photo/sunbeams-behind-clouds-on-sky-17811024/"
+  },
+  {
+    "id": "sunrise-clouds",
+    "name": "일출 하늘",
+    "file": "sunrise-clouds.jpg",
+    "source": "https://www.pexels.com/photo/cloudy-sky-at-sunrise-in-rays-of-sun-5459411/"
+  },
+  {
+    "id": "cross-sunset-01",
+    "name": "십자가와 노을 1",
+    "file": "cross-sunset-01.jpg",
+    "source": "https://www.pexels.com/photo/cross-during-sunset-20889059/"
+  },
+  {
+    "id": "cross-sunset-02",
+    "name": "십자가와 노을 2",
+    "file": "cross-sunset-02.jpg",
+    "source": "https://www.pexels.com/photo/silhouette-of-cross-on-mountain-under-cloudy-sky-during-sunset-10996743/"
+  },
+  {
+    "id": "wood-texture-dark",
+    "name": "어두운 나무 질감",
+    "file": "wood-texture-dark.jpg",
+    "source": "https://www.pexels.com/photo/6373386/"
+  },
+  {
+    "id": "stone-texture",
+    "name": "돌 질감",
+    "file": "stone-texture.jpg",
+    "source": "https://www.pexels.com/photo/9497822/"
+  },
+  {
+    "id": "dove-sky",
+    "name": "비둘기(성령)",
+    "file": "dove-sky.jpg",
+    "source": "https://www.pexels.com/photo/white-dove-flying-19915968/"
+  },
+  {
+    "id": "communion-bread-wine",
+    "name": "성찬식(빵과 포도주)",
+    "file": "communion-bread-wine.jpg",
+    "source": "https://www.pexels.com/photo/a-person-holding-a-bread-and-wine-10293695/"
+  },
+  {
+    "id": "baptism-lake",
+    "name": "세례",
+    "file": "baptism-lake.jpg",
+    "source": "https://www.pexels.com/photo/a-woman-being-baptized-in-a-lake-6672761/"
+  },
+  {
+    "id": "mountain-sunrise",
+    "name": "산 일출",
+    "file": "mountain-sunrise.jpg",
+    "source": "https://www.pexels.com/photo/silhouette-of-mountain-under-cloudy-sky-during-sunset-4276431/"
+  },
+  {
+    "id": "forest-path-light",
+    "name": "숲속 빛줄기 오솔길",
+    "file": "forest-path-light.jpg",
+    "source": "https://www.pexels.com/photo/misty-sunlight-through-tall-forest-trees-36930289/"
+  },
+  {
+    "id": "church-exterior-cloudy",
+    "name": "예배당 외관",
+    "file": "church-exterior-cloudy.jpg",
+    "source": "https://www.pexels.com/photo/photo-of-old-church-building-under-cloudy-sky-2886268/"
+  },
+  {
+    "id": "praying-hands-closeup",
+    "name": "기도하는 손 클로즈업",
+    "file": "praying-hands-closeup.jpg",
+    "source": "https://www.pexels.com/photo/close-up-of-hands-257037/"
+  },
+  {
+    "id": "bible-coffee-desk",
+    "name": "성경과 커피",
+    "file": "bible-coffee-desk.jpg",
+    "source": "https://www.pexels.com/photo/cozy-desk-with-coffee-books-and-plants-31763922/"
+  },
+  {
+    "id": "bell-tower",
+    "name": "교회 종탑",
+    "file": "bell-tower.jpg",
+    "source": "https://www.pexels.com/photo/church-bell-tower-16820088/"
+  },
+  {
+    "id": "church-podium",
+    "name": "강대상",
+    "file": "church-podium.jpg",
+    "source": "https://www.pexels.com/photo/podium-with-a-microphone-inside-a-church-17492045/"
+  },
+  {
+    "id": "cross-necklace-bw",
+    "name": "십자가 목걸이",
+    "file": "cross-necklace-bw.jpg",
+    "source": "https://www.pexels.com/photo/man-wearing-cross-necklace-19622309/"
+  },
+  {
+    "id": "calm-lake-sunset",
+    "name": "잔잔한 호수 노을",
+    "file": "calm-lake-sunset.jpg",
+    "source": "https://www.pexels.com/photo/serene-sunset-over-calm-lake-reflection-30755997/"
+  }
+]

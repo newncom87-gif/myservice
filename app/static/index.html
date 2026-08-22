@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>성경말씀 PPT 생성기</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header class="app-header">
+  <h1>성경말씀 PPT 생성기</h1>
+  <button id="generateBtn" class="btn btn-primary btn-lg">PPT 생성 및 다운로드</button>
+</header>
+
+<div class="workspace">
+  <div class="settings-col">
+    <div class="sticky-top-group">
+      <section class="panel top-bar">
+        <div class="top-bar-row">
+          <span class="top-bar-label">작업</span>
+          <select id="projectSelect"><option value="">-- 저장된 작업 불러오기 --</option></select>
+          <input type="text" id="projectNameInput" placeholder="작업 이름">
+          <button id="saveProjectBtn" class="btn btn-sm">저장</button>
+          <button id="newProjectBtn" class="btn btn-sm btn-danger">+ 새 작업</button>
+        </div>
+        <div class="top-bar-row">
+          <span class="top-bar-label">테마</span>
+          <select id="themeSelect"><option value="">-- 저장된 테마 불러오기 --</option></select>
+          <input type="text" id="themeNameInput" placeholder="테마 이름" value="기본테마">
+          <button id="saveThemeBtn" class="btn btn-sm">저장</button>
+          <span class="muted top-bar-hint">표지+본문 서식을 함께 저장/적용합니다</span>
+        </div>
+      </section>
+
+      <nav class="tab-bar" id="tabBar">
+        <button class="tab-btn" data-tab="blocks">1. 구절 선택</button>
+        <button class="tab-btn" data-tab="slides">2. 슬라이드 분배</button>
+        <button class="tab-btn" data-tab="backgrounds">3. 배경이미지</button>
+        <button class="tab-btn" data-tab="cover">4. 표지 편집</button>
+        <button class="tab-btn" data-tab="body">5. 본문 서식</button>
+      </nav>
+    </div>
+
+    <section class="panel tab-panel" id="panel-blocks" data-tab-panel="blocks">
+      <h2>1. 구절 선택</h2>
+      <div class="block-form">
+        <label>책
+          <select id="bookSelect"></select>
+        </label>
+        <div class="field-row">
+          <label>시작 장
+            <select id="startChapter"></select>
+          </label>
+          <label>시작 절
+            <input type="number" id="startVerse" min="1" value="1">
+          </label>
+        </div>
+        <div class="field-row">
+          <label>끝 장
+            <select id="endChapter"></select>
+          </label>
+          <label>끝 절
+            <input type="number" id="endVerse" min="1" value="1">
+          </label>
+        </div>
+        <button id="addBlockBtn" class="btn btn-block">+ 구절 블록 추가</button>
+      </div>
+      <ol id="blockList" class="block-list"></ol>
+    </section>
+
+    <section class="panel tab-panel" id="panel-slides" data-tab-panel="slides">
+      <h2>2. 슬라이드 구절 분배 (기본값)</h2>
+      <label class="inline-label">기본 슬라이드당 구절 수
+        <input type="number" id="defaultGroupSize" min="1" value="2" style="width:4em">
+      </label>
+      <p class="muted">슬라이드별 세부 구절 수 조정은 오른쪽 "전체 미리보기"에서 직접 확인하며 바꿀 수 있습니다.</p>
+      <div id="slideList" class="slide-list"></div>
+    </section>
+
+    <section class="panel tab-panel" id="panel-backgrounds" data-tab-panel="backgrounds">
+      <h2>3. 배경이미지 (전체 기본값)</h2>
+      <div class="bg-toolbar">
+        <label class="btn btn-sm">
+          이미지 업로드
+          <input type="file" id="uploadInput" accept="image/*" hidden>
+        </label>
+        <span id="uploadStatus" class="muted"></span>
+      </div>
+      <div id="globalBgGallery" class="bg-gallery"></div>
+    </section>
+
+    <section class="panel tab-panel" id="panel-cover" data-tab-panel="cover">
+      <h2>4. 표지 편집</h2>
+      <div class="editor-preview-wrap">
+        <div id="coverPreview" class="slide-box editable"></div>
+      </div>
+      <div class="editor-controls" id="coverControls"></div>
+    </section>
+
+    <section class="panel tab-panel" id="panel-body" data-tab-panel="body">
+      <h2>5. 본문 슬라이드 서식</h2>
+      <div class="editor-preview-wrap">
+        <div id="bodyPreview" class="slide-box editable"></div>
+      </div>
+      <div class="editor-controls" id="bodyControls"></div>
+    </section>
+  </div>
+
+  <div class="preview-col">
+    <div class="preview-header">
+      <h2>전체 미리보기 및 구절 수 조정 (<span id="slideCount">0</span>장)</h2>
+      <p class="muted">각 슬라이드의 "구절 수"를 바꾸면 뒤 슬라이드들이 자동으로 다시 배치됩니다. 배경도 슬라이드별로 바꿀 수 있습니다.</p>
+    </div>
+    <div id="fullPreview" class="full-preview"></div>
+    <div class="generate-footer">
+      <button id="generateBtnBottom" class="btn btn-primary btn-lg">PPT 생성 및 다운로드</button>
+    </div>
+  </div>
+</div>
+
+<div id="bgPickerOverlay" class="overlay hidden">
+  <div class="overlay-box">
+    <div class="overlay-header">
+      <span>배경이미지 선택</span>
+      <button id="bgPickerClose" class="btn btn-sm">닫기</button>
+    </div>
+    <div id="bgPickerGallery" class="bg-gallery"></div>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
