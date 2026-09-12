@@ -8,6 +8,7 @@
 <body>
 <header class="app-header">
   <h1>성경말씀 PPT 생성기</h1>
+  <button id="logoutBtn" class="btn btn-sm">로그아웃</button>
   <button id="generateBtn" class="btn btn-primary btn-lg">PPT 생성 및 다운로드</button>
 </header>
 
@@ -89,7 +90,13 @@
     </section>
 
     <section class="panel tab-panel" id="panel-cover" data-tab-panel="cover">
-      <h2>4. 표지 편집</h2>
+      <div class="panel-header-row">
+        <h2>4. 표지 편집</h2>
+        <div class="history-controls">
+          <button id="coverUndoBtn" class="btn btn-sm" title="실행취소 (Ctrl+Z)">↩ 실행취소</button>
+          <button id="coverRedoBtn" class="btn btn-sm" title="재실행 (Ctrl+Shift+Z)">↪ 재실행</button>
+        </div>
+      </div>
       <div class="editor-preview-wrap">
         <div id="coverPreview" class="slide-box editable"></div>
       </div>
@@ -97,7 +104,13 @@
     </section>
 
     <section class="panel tab-panel" id="panel-body" data-tab-panel="body">
-      <h2>5. 본문 슬라이드 서식</h2>
+      <div class="panel-header-row">
+        <h2>5. 본문 슬라이드 서식</h2>
+        <div class="history-controls">
+          <button id="bodyUndoBtn" class="btn btn-sm" title="실행취소 (Ctrl+Z)">↩ 실행취소</button>
+          <button id="bodyRedoBtn" class="btn btn-sm" title="재실행 (Ctrl+Shift+Z)">↪ 재실행</button>
+        </div>
+      </div>
       <div class="editor-preview-wrap">
         <div id="bodyPreview" class="slide-box editable"></div>
       </div>

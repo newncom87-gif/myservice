@@ -62,7 +62,7 @@ class Api:
 
 
 def main():
-    flask_app = create_app()
+    flask_app = create_app(require_auth=False)
     server_thread = ServerThread(flask_app)
     server_thread.start()
 

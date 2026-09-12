@@ -110,6 +110,13 @@ body {
 }
 .panel h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); font-weight: 600; }
 
+.panel-header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.panel-header-row h2 { margin: 0 0 12px; }
+.history-controls { display: flex; gap: 6px; margin-bottom: 12px; }
+
+.btn:disabled { opacity: 0.4; cursor: default; }
+.btn:disabled:hover { background: #33363f; }
+
 label { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
 .inline-label { flex-direction: row; align-items: center; gap: 8px; margin-bottom: 10px; }
 
@@ -319,3 +326,21 @@ select, input[type=text], input[type=number] {
   border-radius: 10px; padding: 16px; width: min(720px, 92vw); max-height: 82vh; overflow-y: auto;
 }
 .overlay-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; }
+
+.hidden { display: none !important; }
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-box {
+  width: min(340px, 90vw);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.login-box h2 { color: var(--text); text-align: center; margin: 0 0 4px; font-weight: 700; }
+.login-box form { display: flex; flex-direction: column; gap: 12px; }
+.login-error { color: var(--danger); text-align: center; margin: 0; }

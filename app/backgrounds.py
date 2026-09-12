@@ -35,7 +35,7 @@ def resolve_path(ref):
             raise ValueError(f"알 수 없는 기본 배경: {ref['defaultId']}")
         return DEFAULT_DIR / item["file"]
     if ref.get("uploadId"):
-        p = paths.uploads_dir() / ref["uploadId"]
+        p = paths.uploads_dir() / Path(ref["uploadId"]).name
         if not p.exists():
             raise ValueError(f"업로드 배경을 찾을 수 없습니다: {ref['uploadId']}")
         return p

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>로그인 - 성경말씀 PPT 생성기</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="login-page">
+<div class="login-box panel">
+  <h2>성경말씀 PPT 생성기</h2>
+  <form id="loginForm">
+    <label>아이디
+      <input type="text" id="username" autocomplete="username" required>
+    </label>
+    <label>비밀번호
+      <input type="password" id="password" autocomplete="current-password" required>
+    </label>
+    <p id="loginError" class="login-error muted hidden"></p>
+    <button type="submit" class="btn btn-primary btn-block">로그인</button>
+  </form>
+</div>
+<script src="/static/js/login.js"></script>
+</body>
+</html>

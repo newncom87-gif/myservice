@@ -35,6 +35,10 @@ const TITLE_PRESETS = ["성경봉독", "오늘의 성경", "성경말씀"];
 // ---------- 유틸 ----------
 async function api(path, opts) {
   const res = await fetch(path, opts);
+  if (res.status === 401) {
+    location.href = "/login";
+    throw new Error("로그인이 필요합니다");
+  }
   if (!res.ok) {
     let msg = res.statusText;
     try { const j = await res.json(); if (j.error) msg = j.error; } catch (e) {}
@@ -106,6 +110,24 @@ async function init() {
   document.getElementById("bgPickerClose").addEventListener("click", closeBgPicker);
   document.getElementById("generateBtn").addEventListener("click", onGenerate);
   document.getElementById("generateBtnBottom").addEventListener("click", onGenerate);
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await api("/api/logout", { method: "POST" });
+    location.href = "/login";
+  });
+  document.getElementById("coverUndoBtn").addEventListener("click", undoTheme);
+  document.getElementById("coverRedoBtn").addEventListener("click", redoTheme);
+  document.getElementById("bodyUndoBtn").addEventListener("click", undoTheme);
+  document.getElementById("bodyRedoBtn").addEventListener("click", redoTheme);
+  document.addEventListener("keydown", (e) => {
+    if (!(e.metaKey || e.ctrlKey)) return;
+    const key = e.key.toLowerCase();
+    const isUndo = key === "z" && !e.shiftKey;
+    const isRedo = (key === "z" && e.shiftKey) || key === "y";
+    if (!isUndo && !isRedo) return;
+    if (e.target && e.target.isContentEditable) return; // 절 본문 줄바꿈 편집 중엔 브라우저 기본 실행취소 유지
+    e.preventDefault();
+    if (isUndo) undoTheme(); else redoTheme();
+  });
   setupTabs();
 
   renderGlobalBgGallery();
@@ -117,6 +139,7 @@ async function init() {
   renderBodyControls();
   renderBlockList();
   await recompute();
+  resetHistory();
 
   window.addEventListener("resize", debounce(() => rescaleTextBoxes(document.body), 150));
 }
@@ -521,10 +544,91 @@ function debounce(fn, ms) {
 // (패널을 다시 그리면 입력 중이던 요소가 사라져 포커스가 끊긴다).
 // 반대로 드래그는 입력 포커스가 없는 조작이라 끝난 뒤 컨트롤 패널까지 함께
 // 다시 그려서 옮겨진 X/Y 값이 숫자 입력칸에도 반영되게 한다.
-function refreshCoverPreview() { renderCoverEditor(); renderFullPreview(); }
-function refreshCoverAll() { renderCoverEditor(); renderCoverControls(); renderFullPreview(); }
-function refreshBodyPreview() { renderBodyEditor(); renderFullPreview(); }
-function refreshBodyAll() { renderBodyEditor(); renderBodyControls(); renderFullPreview(); }
+function refreshCoverPreview() { recordThemeChange(); renderCoverEditor(); renderFullPreview(); }
+function refreshCoverAll() { recordThemeChange(); renderCoverEditor(); renderCoverControls(); renderFullPreview(); }
+function refreshBodyPreview() { recordThemeChange(); renderBodyEditor(); renderFullPreview(); }
+function refreshBodyAll() { recordThemeChange(); renderBodyEditor(); renderBodyControls(); renderFullPreview(); }
+
+// ---------- 표지/본문 서식 실행취소·재실행 ----------
+// 위 refresh 함수들은 표지/본문 편집(드래그 이동, 색상/폰트/위치 등 모든 서식
+// 변경)의 유일한 공통 경로라서, 여기서 recordThemeChange()를 한 번만 걸어주면
+// 모든 편집 동작이 자동으로 히스토리에 잡힌다. 타이핑/드래그처럼 "input" 이벤트가
+// 연속으로 쏟아지는 조작은 한 글자/한 픽셀마다 실행취소 단계가 생기면 오히려
+// 불편하므로, 조작이 멈추고 일정 시간(HISTORY_DEBOUNCE_MS) 지날 때까지 커밋을
+// 미뤄서 하나의 실행취소 단계로 묶는다.
+const HISTORY_LIMIT = 60;
+const HISTORY_DEBOUNCE_MS = 500;
+let undoStack = [];
+let redoStack = [];
+let lastThemeSnapshot = null;
+let historyDebounceTimer = null;
+
+function resetHistory() {
+  clearTimeout(historyDebounceTimer);
+  undoStack = [];
+  redoStack = [];
+  lastThemeSnapshot = JSON.stringify(state.theme);
+  updateUndoRedoButtons();
+}
+
+function commitThemeSnapshot() {
+  clearTimeout(historyDebounceTimer);
+  const current = JSON.stringify(state.theme);
+  if (current === lastThemeSnapshot) return;
+  undoStack.push(lastThemeSnapshot);
+  if (undoStack.length > HISTORY_LIMIT) undoStack.shift();
+  redoStack = [];
+  lastThemeSnapshot = current;
+  updateUndoRedoButtons();
+}
+
+function recordThemeChange() {
+  clearTimeout(historyDebounceTimer);
+  historyDebounceTimer = setTimeout(commitThemeSnapshot, HISTORY_DEBOUNCE_MS);
+  updateUndoRedoButtons();
+}
+
+function undoTheme() {
+  commitThemeSnapshot();
+  if (undoStack.length === 0) return;
+  redoStack.push(lastThemeSnapshot);
+  const prev = undoStack.pop();
+  state.theme = JSON.parse(prev);
+  lastThemeSnapshot = prev;
+  renderCoverEditor();
+  renderCoverControls();
+  renderBodyEditor();
+  renderBodyControls();
+  renderFullPreview();
+  updateUndoRedoButtons();
+}
+
+function redoTheme() {
+  if (redoStack.length === 0) return;
+  undoStack.push(lastThemeSnapshot);
+  const next = redoStack.pop();
+  state.theme = JSON.parse(next);
+  lastThemeSnapshot = next;
+  renderCoverEditor();
+  renderCoverControls();
+  renderBodyEditor();
+  renderBodyControls();
+  renderFullPreview();
+  updateUndoRedoButtons();
+}
+
+function updateUndoRedoButtons() {
+  const canUndo = undoStack.length > 0 || JSON.stringify(state.theme) !== lastThemeSnapshot;
+  const canRedo = redoStack.length > 0;
+  for (const id of ["coverUndoBtn", "bodyUndoBtn"]) {
+    const btn = document.getElementById(id);
+    if (btn) btn.disabled = !canUndo;
+  }
+  for (const id of ["coverRedoBtn", "bodyRedoBtn"]) {
+    const btn = document.getElementById(id);
+    if (btn) btn.disabled = !canRedo;
+  }
+}
 
 function renderCoverEditor() {
   const preview = document.getElementById("coverPreview");
@@ -563,15 +667,15 @@ function renderCoverControls() {
   const cover = state.theme.cover;
 
   wrap.appendChild(buildLineControl("1행 · 타이틀", cover.title, {
-    hasText: true, presets: TITLE_PRESETS, onChange: () => { renderCoverEditor(); renderFullPreview(); },
+    hasText: true, presets: TITLE_PRESETS, onChange: refreshCoverPreview,
   }));
   wrap.appendChild(buildLineControl("2행 · 구절 표시 (자동)", cover.verseRef, {
-    hasText: false, onChange: () => { renderCoverEditor(); renderFullPreview(); },
+    hasText: false, onChange: refreshCoverPreview,
   }));
   wrap.appendChild(buildLineControl("3행 · 발표자", cover.presenter, {
-    hasText: true, hasShowToggle: true, textPlaceholder: "예: 김형균 집사", onChange: () => { renderCoverEditor(); renderFullPreview(); },
+    hasText: true, hasShowToggle: true, textPlaceholder: "예: 김형균 집사", onChange: refreshCoverPreview,
   }));
-  wrap.appendChild(buildOverlayControl("가독성 오버레이", cover.overlay, () => { renderCoverEditor(); renderFullPreview(); }));
+  wrap.appendChild(buildOverlayControl("가독성 오버레이", cover.overlay, refreshCoverPreview));
 }
 
 function renderBodyEditor() {
@@ -611,12 +715,12 @@ function renderBodyControls() {
   wrap.innerHTML = "";
   const body = state.theme.body;
   wrap.appendChild(buildLineControl("구절 범위 제목 (예: 마가복음 6:30~32)", body.refTitle, {
-    hasText: false, hasShowToggle: true, onChange: () => { renderBodyEditor(); renderFullPreview(); },
+    hasText: false, hasShowToggle: true, onChange: refreshBodyPreview,
   }));
   wrap.appendChild(buildLineControl("구절 본문 (절 번호 + 본문)", body.verseText, {
-    hasText: false, hasNumberColor: true, hasVerseSpacing: true, onChange: () => { renderBodyEditor(); renderFullPreview(); },
+    hasText: false, hasNumberColor: true, hasVerseSpacing: true, onChange: refreshBodyPreview,
   }));
-  wrap.appendChild(buildOverlayControl("가독성 오버레이", body.overlay, () => { renderBodyEditor(); renderFullPreview(); }));
+  wrap.appendChild(buildOverlayControl("가독성 오버레이", body.overlay, refreshBodyPreview));
 }
 
 function buildLineControl(title, style, opts) {
@@ -889,6 +993,7 @@ function onLoadTheme() {
   renderCoverControls();
   renderBodyControls();
   renderFullPreview();
+  resetHistory();
 }
 
 // ---------- 작업(구절/분배/배경/테마 전체 상태) 저장·불러오기 ----------
@@ -953,6 +1058,7 @@ async function onLoadProject() {
   renderCoverControls();
   renderBodyControls();
   await recompute();
+  resetHistory();
 }
 
 function onNewProject() {

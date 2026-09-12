@@ -1,0 +1,17 @@
+services:
+  bible-ppt:
+    build: .
+    image: bible-ppt-web:latest
+    ports:
+      - "8765:8765"
+    volumes:
+      - bible-ppt-data:/data
+      # NAS File Station 등에서 데이터 폴더를 직접 보고 싶다면 위 named volume 대신
+      # bind mount로 교체: - /volume1/docker/bible-ppt/data:/data
+    environment:
+      - BIBLE_PPT_DATA_DIR=/data
+      # - SECRET_KEY=원하는-고정-랜덤값   # 생략하면 /data/secret_key에 자동 생성됨
+    restart: unless-stopped
+
+volumes:
+  bible-ppt-data:

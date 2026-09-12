@@ -1,0 +1,9 @@
+venv/
+build/
+dist/
+data_source/
+.git/
+__pycache__/
+icons/
+*.spec
+*.dmg
