@@ -11,6 +11,7 @@ import uuid
 from pathlib import Path
 
 from flask import Flask, jsonify, redirect, request, send_file, send_from_directory, url_for
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from . import backgrounds, bible_data as bd, compose, db, paths
 from . import fonts as font_store
@@ -60,6 +61,10 @@ def _migrate_legacy_json(user_id):
 
 def create_app(require_auth=True):
     app = Flask(__name__, static_folder="static", static_url_path="/static")
+    # nginx 등 리버스 프록시가 /bible 같은 하위 경로로 마운트할 때, X-Forwarded-Prefix
+    # 헤더를 SCRIPT_NAME으로 반영해 url_for()가 생성하는 redirect Location이 그
+    # 경로를 포함하도록 한다. 헤더가 없으면(데스크톱/로컬 직접 접속) 그대로 무시된다.
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
     app.config["SECRET_KEY"] = _get_or_create_secret_key()
     db.init_db()
 

@@ -36,7 +36,7 @@ const TITLE_PRESETS = ["성경봉독", "오늘의 성경", "성경말씀"];
 async function api(path, opts) {
   const res = await fetch(path, opts);
   if (res.status === 401) {
-    location.href = "/login";
+    location.href = "login";
     throw new Error("로그인이 필요합니다");
   }
   if (!res.ok) {
@@ -76,21 +76,21 @@ function bgUrl(ref) {
   if (!ref) return "";
   if (ref.defaultId) {
     const item = state.defaultBackgrounds.find((b) => b.id === ref.defaultId);
-    return item ? `/static/backgrounds/default/${item.file}` : "";
+    return item ? `static/backgrounds/default/${item.file}` : "";
   }
-  if (ref.uploadId) return `/user-bg/${ref.uploadId}`;
+  if (ref.uploadId) return `user-bg/${ref.uploadId}`;
   return "";
 }
 
 // ---------- 초기화 ----------
 async function init() {
-  state.books = await apiJson("/api/books");
-  const bgData = await apiJson("/api/backgrounds");
+  state.books = await apiJson("api/books");
+  const bgData = await apiJson("api/backgrounds");
   state.defaultBackgrounds = bgData.default;
   state.userBackgrounds = bgData.user;
-  state.themesList = await apiJson("/api/themes");
-  state.projectsList = await apiJson("/api/projects");
-  state.fonts = await apiJson("/api/fonts");
+  state.themesList = await apiJson("api/themes");
+  state.projectsList = await apiJson("api/projects");
+  state.fonts = await apiJson("api/fonts");
 
   populateBookSelect();
   await populateChaptersForBook();
@@ -111,8 +111,8 @@ async function init() {
   document.getElementById("generateBtn").addEventListener("click", onGenerate);
   document.getElementById("generateBtnBottom").addEventListener("click", onGenerate);
   document.getElementById("logoutBtn").addEventListener("click", async () => {
-    await api("/api/logout", { method: "POST" });
-    location.href = "/login";
+    await api("api/logout", { method: "POST" });
+    location.href = "login";
   });
   document.getElementById("coverUndoBtn").addEventListener("click", undoTheme);
   document.getElementById("coverRedoBtn").addEventListener("click", redoTheme);
@@ -175,7 +175,7 @@ function populateBookSelect() {
 
 async function populateChaptersForBook() {
   const book = document.getElementById("bookSelect").value;
-  const chapters = await apiJson(`/api/chapters?book=${encodeURIComponent(book)}`);
+  const chapters = await apiJson(`api/chapters?book=${encodeURIComponent(book)}`);
   for (const id of ["startChapter", "endChapter"]) {
     const sel = document.getElementById(id);
     sel.innerHTML = "";
@@ -242,7 +242,7 @@ async function recompute() {
     state.composed = { blockRefs: [], slides: [] };
   } else {
     try {
-      state.composed = await apiJson("/api/compose", {
+      state.composed = await apiJson("api/compose", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -299,7 +299,7 @@ function renderBgGallery(container, selectedRef, onPick) {
   for (const item of all) {
     const isSelected = selectedRef && ((item.ref.defaultId && item.ref.defaultId === selectedRef.defaultId) ||
       (item.ref.uploadId && item.ref.uploadId === selectedRef.uploadId));
-    const url = item.userItem ? `/user-bg/${item.file}` : `/static/backgrounds/default/${item.file}`;
+    const url = item.userItem ? `user-bg/${item.file}` : `static/backgrounds/default/${item.file}`;
     const thumb = el("div", {
       class: "bg-thumb" + (isSelected ? " selected" : ""),
       style: `background-image:url('${url}')`,
@@ -323,8 +323,8 @@ async function onUploadBackground(e) {
   const fd = new FormData();
   fd.append("file", file);
   try {
-    await apiJson("/api/backgrounds/upload", { method: "POST", body: fd });
-    const bgData = await apiJson("/api/backgrounds");
+    await apiJson("api/backgrounds/upload", { method: "POST", body: fd });
+    const bgData = await apiJson("api/backgrounds");
     state.defaultBackgrounds = bgData.default;
     state.userBackgrounds = bgData.user;
     renderGlobalBgGallery();
@@ -336,8 +336,8 @@ async function onUploadBackground(e) {
 }
 
 async function deleteUserBackground(filename) {
-  await apiJson(`/api/backgrounds/user/${encodeURIComponent(filename)}`, { method: "DELETE" });
-  const bgData = await apiJson("/api/backgrounds");
+  await apiJson(`api/backgrounds/user/${encodeURIComponent(filename)}`, { method: "DELETE" });
+  const bgData = await apiJson("api/backgrounds");
   state.defaultBackgrounds = bgData.default;
   state.userBackgrounds = bgData.user;
   renderGlobalBgGallery();
@@ -965,7 +965,7 @@ function renderThemeSelect() {
 async function onSaveTheme() {
   const name = document.getElementById("themeNameInput").value.trim();
   if (!name) { alert("테마 이름을 입력하세요"); return; }
-  state.themesList = await apiJson("/api/themes", {
+  state.themesList = await apiJson("api/themes", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, cover: state.theme.cover, body: state.theme.body }),
@@ -1017,7 +1017,7 @@ async function onSaveProject() {
     theme: state.theme,
     manualBreaks: state.manualBreaks,
   };
-  state.projectsList = await apiJson("/api/projects", {
+  state.projectsList = await apiJson("api/projects", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(snapshot),
@@ -1082,7 +1082,7 @@ async function onGenerate() {
   const originalText = btns[0].textContent;
   for (const b of btns) { b.disabled = true; b.textContent = "생성 중..."; }
   try {
-    const res = await api("/api/generate", {
+    const res = await api("api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
